@@ -1,4 +1,4 @@
-export class Credential {
+export class CredentialDto {
   id: number;
   title: string;
   site: string;
