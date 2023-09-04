@@ -3,7 +3,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { CredentialsService } from './credentials.service';
 import { CreateCredentialDto } from './dto/create-credential.dto';
 import { CredentialDto } from './dto/get-credential.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('endpoints')
 @Controller('credentials')
 @UseGuards(AuthGuard('jwt'))
 export class CredentialsController {

@@ -2,7 +2,9 @@ import { Controller, Post, Body, ValidationPipe, HttpException, HttpStatus } fro
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('endpoints')
 @Controller('users')
 export class UsersController {
   constructor(
