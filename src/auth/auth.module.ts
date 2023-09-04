@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module'; 
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { SessionsModule } from 'src/sessions/sessions.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { JwtStrategy } from './jwt.strategy';
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     forwardRef(() => UsersModule),
+    SessionsModule,
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
