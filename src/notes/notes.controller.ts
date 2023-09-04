@@ -3,7 +3,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('endpoints')
 @Controller('notes')
 @UseGuards(AuthGuard('jwt'))
 export class NotesController {
