@@ -1,28 +1,22 @@
-import { Injectable, NotFoundException, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   private SALT = 10;
-  constructor(
-    private readonly userRepository: UsersRepository,
-    private readonly jwtService: JwtService,
-  ) {}
+  constructor(private readonly userRepository: UsersRepository) {}
 
-async createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
 
-    // Verifique se o email já está em uso
     const existingUser = await this.findEmail(email);
     if (existingUser) {
       throw new ConflictException('O email já está em uso');
     }
 
-    // Continue criando o usuário se o email não estiver em uso
     const hashPassword = await bcrypt.hash(password, this.SALT);
     const result = await this.userRepository.createUser({
       ...createUserDto,
@@ -51,25 +45,6 @@ async createUser(createUserDto: CreateUserDto) {
     if (!user) throw new NotFoundException('user not found');
 
     return user;
-  }
-
-  async loginUser(email: string, password: string) {
-    const user = await this.findEmail(email);
-
-    if (!user) {
-      throw new UnauthorizedException('Usuário não encontrado');
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciais inválidas');
-    }
-
-    const payload = { sub: user.id };
-    const accessToken = this.jwtService.sign(payload);
-
-    return { accessToken };
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto) {

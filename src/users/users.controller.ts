@@ -1,10 +1,14 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { AuthService } from '../auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post('register')
   async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto) {
@@ -14,7 +18,12 @@ export class UsersController {
 
   @Post('login')
   async loginUser(@Body() { email, password }: { email: string; password: string }) {
-    const { accessToken } = await this.usersService.loginUser(email, password);
+    if (!email || !password) {
+      throw new HttpException('Requisição inválida. Email e senha são obrigatórios.', HttpStatus.BAD_REQUEST);
+    }
+
+    const user = await this.authService.validateUser(email, password);
+    const { accessToken } = await this.authService.login(user);
     return { accessToken };
   }
 }

@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
+import { CredentialsRepository } from './credentials.repository';
 import { CreateCredentialDto } from './dto/create-credential.dto';
-import { UpdateCredentialDto } from './dto/update-credential.dto';
+import Cryptr = require("cryptr");
 
 @Injectable()
 export class CredentialsService {
-  create(createCredentialDto: CreateCredentialDto) {
-    return 'This action adds a new credential';
-  }
+  constructor(
+    private readonly credentialsRepository: CredentialsRepository,
+  ) {}
 
-  findAll() {
-    return `This action returns all credentials`;
-  }
+  private readonly cryptr = new Cryptr(process.env.CRYPTR_SECRET);
 
-  findOne(id: number) {
-    return `This action returns a #${id} credential`;
-  }
+  async createCredential(createCredentialDto: CreateCredentialDto) {
+    const { title, site, username, password, userId } = createCredentialDto;
 
-  update(id: number, updateCredentialDto: UpdateCredentialDto) {
-    return `This action updates a #${id} credential`;
-  }
+    // Verifique se o título é único para o usuário atual
+    const existingCredential = await this.credentialsRepository.findOne({
+      where: {
+        title,
+        userId,
+      },
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} credential`;
+    if (existingCredential) {
+      // O título já está em uso pelo mesmo usuário
+      throw new ConflictException('Título já existe para este usuário');
+    }
+
+    // Criptografe a senha antes de salvar
+    const encryptedPassword = this.cryptr.encrypt(password);
+
+    return this.credentialsRepository.createCredential({
+      title,
+      site,
+      username,
+      password: encryptedPassword,
+      userId,
+    });
   }
 }
