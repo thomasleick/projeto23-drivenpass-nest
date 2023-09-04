@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString, IsInt, IsBoolean } from 'class-validator';
-import { IsDateAsString } from './custom-validators';
+import { IsNotEmpty, IsString, IsBoolean, IsDate } from 'class-validator';
 
-export class CreateCardDto {
+export class EncryptedCardDto {
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -9,16 +8,16 @@ export class CreateCardDto {
   userId: number;
 
   @IsNotEmpty()
-  @IsInt()
-  cardNumber: number;
+  @IsString()
+  cardNumber: string;
 
   @IsNotEmpty()
   @IsString()
   name: string;
 
   @IsNotEmpty()
-  @IsDateAsString() 
-  expiry: string;
+  @IsDate()
+  expiry: Date;
 
   @IsNotEmpty()
   cvc: string;
