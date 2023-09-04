@@ -21,7 +21,7 @@ model User {
 
 model Session {
   id     Int    @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
   token  String
 
@@ -34,7 +34,7 @@ model Credential {
   site     String
   username String
   password String
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
 
   @@unique([title, userId])
@@ -45,7 +45,7 @@ model Note {
   id     Int    @id @default(autoincrement())
   title  String @unique
   note   String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
   @@unique([userId, title])
@@ -54,7 +54,7 @@ model Note {
 
 model Card {
   id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
   title      String
   cardNumber String

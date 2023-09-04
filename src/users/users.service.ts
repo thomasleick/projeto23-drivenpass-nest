@@ -35,6 +35,10 @@ export class UsersService {
   async findEmail(email: string) {
     return await this.userRepository.findEmail(email);
   }
+  async findUserById(id: number) {
+    return await this.userRepository.findUserById(id);
+  }
+  
 
   findAll() {
     return `This action returns all users`;
@@ -52,7 +56,7 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  removeUser(id: number) {
-    return `This action removes a #${id} user`;
+  async removeUser(id: number) {
+    return await this.userRepository.removeUser(id);
   }
 }

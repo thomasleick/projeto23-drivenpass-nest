@@ -31,6 +31,11 @@ export class UsersRepository {
       where: { email },
     });
   }
+  async findUserById(id: number) {
+    return await this.prisma.user.findFirst({
+      where: { id },
+    });
+  }
 
   async findOne(id: number) {
     return await this.prisma.session.findFirst({
