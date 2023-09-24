@@ -1,6 +1,6 @@
 # Projeto #23 - DrivenPass
 
-## Description
+## Descrição
 
 O DrivenPass é um gerenciador de senhas desenvolvido com o framework NestJS. Este projeto visa proporcionar aos usuários uma maneira segura e conveniente de gerenciar suas senhas, notas seguras e informações de cartões. Com o DrivenPass, os usuários podem criar contas, armazenar credenciais de login, notas seguras e detalhes de cartões de forma segura e organizada.
 
