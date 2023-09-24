@@ -1,38 +1,72 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Projeto #23 - DrivenPass
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+O DrivenPass é um gerenciador de senhas desenvolvido com o framework NestJS. Este projeto visa proporcionar aos usuários uma maneira segura e conveniente de gerenciar suas senhas, notas seguras e informações de cartões. Com o DrivenPass, os usuários podem criar contas, armazenar credenciais de login, notas seguras e detalhes de cartões de forma segura e organizada.
 
-## Installation
+
+## Rotas
+
+### Health (/health)
+Rota para verificar o estado da aplicação.
+GET /health: Retorna a mensagem "I'm okay!" com o status code 200 OK.
+
+### Usuários (/users)
+Rota para criação e autenticação de usuários.  
+Criação de Contas:  
+Os usuários fornecem um e-mail válido e uma senha para criar uma conta.  
+Senhas devem ser seguras, com pelo menos 10 caracteres, 1 número, 1 letra minúscula, 1 letra maiúscula e 1 caractere especial.  
+Senhas são armazenadas criptografadas no banco de dados.  
+Acesso de Contas:  
+Os usuários fazem login com e-mail e senha cadastrados.  
+Após o login bem-sucedido, recebem um token JWT para autenticação em requisições subsequentes.  
+
+### Credenciais (/credentials)
+Rota para armazenar e recuperar informações de credenciais de login.  
+Criação de Credenciais:  
+Os usuários fornecem uma URL, um nome de usuário e uma senha para registrar uma nova credencial.  
+Cada credencial possui um título único.  
+Senhas de credenciais são criptografadas com um segredo da aplicação.  
+Busca de Credenciais:  
+Os usuários podem buscar todas as suas credenciais ou uma específica por ID.  
+Senhas são retornadas descriptografadas.  
+Deleção de Credenciais:  
+Os usuários podem deletar credenciais pelo seu ID.  
+
+### Notas Seguras (/notes)
+Rota para armazenar e recuperar notas seguras.  
+Criação de Notas Seguras:  
+Os usuários fornecem um título e a anotação em formato de texto.  
+Cada nota possui um título único.  
+Busca de Notas Seguras:  
+Os usuários podem buscar todas as suas notas seguras ou uma específica por ID.  
+Deleção de Notas Seguras:  
+Os usuários podem deletar notas seguras pelo seu ID.  
+
+### Cartões (/cards)
+Rota para armazenar e recuperar informações de cartões de crédito e débito.  
+Criação de Cartões:  
+Os usuários fornecem número do cartão, nome impresso, código de segurança, data de expiração, senha, se é virtual e o tipo (crédito, débito ou ambos).  
+Cada cartão possui um título único.  
+Senhas de cartões são criptografadas com um segredo da aplicação.  
+Busca de Cartões:  
+Os usuários podem buscar todos os seus cartões ou um específico por ID.  
+Deleção de Cartões:  
+Os usuários podem deletar cartões pelo seu ID.  
+
+### Deletar Dados (/erase)
+Rota para permitir que os usuários excluam suas contas e dados associados.  
+A senha do usuário deve ser fornecida novamente para confirmar a ação.  
+A exclusão inclui dados de credenciais, notas, cartões e o registro do usuário.  
+
+
+## Instalação
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+## Rodando a aplicação
 
 ```bash
 # development
@@ -45,7 +79,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Testes
 
 ```bash
 # unit tests
@@ -58,15 +92,9 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Contribua
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Contribuições são bem vindas! Sinta-se a vontade para abrir nossos issues e enviar novos pull requests para ajudar a melhorar este projeto
 
 ## License
 
